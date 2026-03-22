@@ -15,6 +15,8 @@ NC='\e[0m'
 # Config
 DOMAIN="${DOMAIN:-hhamanagement.com}"
 BUILD_DIR=$(pwd)
+USERNAME="${SUDO_USER:-$(whoami)}"
+USER_HOME="/home/$USERNAME"
 
 # Helper functions
 command_exists() { command -v "$1" >/dev/null 2>&1; }
@@ -76,6 +78,8 @@ install_zoxide() {
 # Core install
 install_system() {
     echo -e "${YELLOW}Updating system packages…${NC}"
+    # Remove duplicate contrib sources file if exists
+    sudo rm -f /etc/apt/sources.list.d/contrib.list
     sudo sed -i 's/main non-free-firmware/main contrib non-free non-free-firmware/g' /etc/apt/sources.list && cat /etc/apt/sources.list | grep -v '^#' | grep -v '^$'
     sudo apt update -y
     sudo apt upgrade -y
@@ -742,10 +746,6 @@ EOF
 }
 
 # Main
-USERNAME="${SUDO_USER:-$(whoami)}"
-USER_HOME="/home/$USERNAME"
-BUILD_DIR=$(pwd)
-
 # Ensure whiptail is present
 if ! command_exists whiptail; then
     echo -e "${YELLOW}Installing whiptail…${NC}"
