@@ -3,7 +3,7 @@
 # Deploys: Nextcloud, OpenWebUI, Ollama, Stable Diffusion, Audiobookshelf
 # https://github.com/PiercingXX
 
-set -euo pipefail
+set -uo pipefail
 
 # Colors
 YELLOW='\e[33m'
